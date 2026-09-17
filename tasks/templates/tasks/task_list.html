@@ -20,20 +20,24 @@
             {{ task.description }}
         </p>
 
-        <p>
-            <strong>Status:</strong> {{ task.status }}
+       <p>
+        <strong>Status:</strong>
+        <span class="badge bg-secondary">{{ task.status }}</span>
         </p>
 
         <p>
-            <strong>Category:</strong> {{ task.category }}
+            <strong>Category:</strong>
+            <span class="badge bg-success">{{ task.category }}</span>
         </p>
 
         <p>
-            <strong>Priority:</strong> {{ task.priority }}
+            <strong>Priority:</strong>
+          <span class="badge bg-info">{{ task.priority }}</span>
         </p>
 
         <p>
-            <strong>Deadline:</strong> {{ task.deadline }}
+            <strong>Deadline:</strong>
+             <span class="badge bg-dark">{{ task.deadline }}</span>
         </p>
 
         <a href="{% url 'edit_task' task.id %}" class="btn btn-warning">
@@ -48,4 +52,31 @@
 
 {% endfor %}
 
+<nav class="mt-4">
+    <ul class="pagination">
+
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    Previous
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    Next
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
 {% endblock %}

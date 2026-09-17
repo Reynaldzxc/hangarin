@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from .models import Task
 from .forms import TaskForm
 
@@ -20,9 +21,14 @@ def dashboard(request):
 def task_list(request):
     tasks = Task.objects.all()
 
-    context = {
-        "tasks": tasks,
+    paginator = Paginator(tasks, 5)
 
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "tasks": page_obj,
+        "page_obj": page_obj,
     }
 
     return render(request, "tasks/task_list.html", context)
