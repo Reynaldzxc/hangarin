@@ -1,0 +1,44 @@
+
+
+{% extends "tasks/base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Tasks</h2>
+<a href="{% url 'create_task' %}" class="btn btn-primary mb-4">
+    Add New Task
+</a>
+
+{% for task in tasks %}
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <h5 class="card-title">{{ task.title }}</h5>
+
+        <p class="card-text">
+            {{ task.description }}
+        </p>
+
+        <p>
+            <strong>Status:</strong> {{ task.status }}
+        </p>
+
+        <p>
+            <strong>Category:</strong> {{ task.category }}
+        </p>
+
+        <p>
+            <strong>Priority:</strong> {{ task.priority }}
+        </p>
+
+        <p>
+            <strong>Deadline:</strong> {{ task.deadline }}
+        </p>
+
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

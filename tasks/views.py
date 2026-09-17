@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Task
+from .forms import TaskForm
 
 def dashboard(request):
     total_tasks = Task.objects.count()
@@ -15,3 +16,29 @@ def dashboard(request):
     }
 
     return render(request, "tasks/dashboard.html", context)
+
+def task_list(request):
+    tasks = Task.objects.all()
+
+    context = {
+        "tasks": tasks,
+
+    }
+
+    return render(request, "tasks/task_list.html", context)
+
+def create_task(request):
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("task_list")
+    else:
+        form = TaskForm()
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, "tasks/task_form.html", context)
