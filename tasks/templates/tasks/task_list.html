@@ -36,6 +36,13 @@
             <strong>Deadline:</strong> {{ task.deadline }}
         </p>
 
+        <a href="{% url 'edit_task' task.id %}" class="btn btn-warning">
+            Edit
+        </a>
+
+        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">
+             Delete
+        </a>
     </div>
 </div>
 

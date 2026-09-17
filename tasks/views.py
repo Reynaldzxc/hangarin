@@ -42,3 +42,35 @@ def create_task(request):
     }
 
     return render(request, "tasks/task_form.html", context)
+
+def edit_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+            form.save()
+            return redirect("task_list")
+    else:
+        form = TaskForm(instance=task)
+
+    context = {
+        "form": form,
+        "task": task,
+    }
+
+    return render(request, "tasks/task_form.html", context)
+
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+
+    if request.method == "POST":
+        task.delete()
+        return redirect("task_list")
+
+    context = {
+        "task": task,
+    }
+
+    return render(request, "tasks/task_confirm_delete.html", context)
