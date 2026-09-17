@@ -10,11 +10,20 @@ class BaseModel(models.Model):
 class Priority(models.Model):
     name = models.CharField(max_length = 100)
 
+    class Meta:
+        verbose_name = "Priority"
+        verbose_name_plural = "Priorities"
+
+
     def __str__(self):
          return self.name
 
 class Category(models.Model):
     name = models.CharField(max_length = 100)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name

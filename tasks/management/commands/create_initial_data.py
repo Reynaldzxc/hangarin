@@ -11,20 +11,28 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         fake = Faker()
 
-        low, created = Priority.objects.get_or_create(name="Low")
-        medium, created = Priority.objects.get_or_create(name="Medium")
         high, created = Priority.objects.get_or_create(name="High")
+        medium, created = Priority.objects.get_or_create(name="Medium")
+        low, created = Priority.objects.get_or_create(name="Low")
+        critical, created = Priority.objects.get_or_create(name="Critical")
+        optional, created = Priority.objects.get_or_create(name="Optional")
 
+        work, created = Category.objects.get_or_create(name="Work")
         school, created = Category.objects.get_or_create(name="School")
         personal, created = Category.objects.get_or_create(name="Personal")
-        project, created = Category.objects.get_or_create(name="Project")
-        other, created = Category.objects.get_or_create(name="Other")
-
+        finance, created = Category.objects.get_or_create(name="Finance")
+        projects, created = Category.objects.get_or_create(name="Projects")
+        
         Task.objects.create(
             title=fake.sentence(nb_words=5),
             description=fake.paragraph(),
-            deadline=timezone.now(),    
-            status="Pending",
+
+            deadline=timezone.make_aware(
+            fake.date_time_this_month()),
+            
+            status=fake.random_element(
+            elements=["Pending", "In Progress", "Completed"]
+            ),
             category=school,
             priority=high
         )
@@ -32,16 +40,22 @@ class Command(BaseCommand):
         Task.objects.create(
             title=fake.sentence(nb_words=5),
             description=fake.paragraph(),
-            deadline=timezone.now(),
+  
+            deadline=timezone.make_aware(
+            fake.date_time_this_month()),
+            
             status="In Progress",
-            category=project,
+            category=projects,
             priority=medium
         )
 
         Task.objects.create(
             title=fake.sentence(nb_words=5),
             description=fake.paragraph(),
-            deadline=timezone.now(),
+
+            deadline=timezone.make_aware(
+            fake.date_time_this_month()),
+           
             status="Completed",
             category=personal,
             priority=low
@@ -49,14 +63,15 @@ class Command(BaseCommand):
 
 
         Note.objects.create(
-        task=Task.objects.last(),
+        task=Task.objects.first(),
         content=fake.paragraph()
         )
 
         Subtask.objects.create(
             parent_task=Task.objects.last(),
             title=fake.sentence(nb_words=4),
-            status="Pending"
+            status=fake.random_element(
+            elements=["Pending", "In Progress", "Completed"])
         )
         
         self.stdout.write(

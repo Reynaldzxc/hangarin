@@ -37,7 +37,7 @@ class TaskAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     autocomplete_fields = ("category", "priority")
     list_per_page = 10
-    actions = ("mark_as_completed", "mark_as_in_progress", "mark_as_pending")
+    actions = ("mark_as_completed", "mark_as_in_progress","mark_as_pending")
 
     fieldsets = (
         ("Task Information", {
@@ -57,6 +57,7 @@ admin.site.register(Task, TaskAdmin)
 
 class NoteAdmin(admin.ModelAdmin):
     list_display = ("task", "content", "created_at", "updated_at")
+    list_filter = ("created_at",)
     search_fields = ("content",)
     readonly_fields = ("created_at", "updated_at")
 
@@ -64,10 +65,15 @@ class NoteAdmin(admin.ModelAdmin):
 admin.site.register(Note, NoteAdmin)
 
 class SubtaskAdmin(admin.ModelAdmin):
-    list_display = ("title", "parent_task", "status", "created_at", "updated_at")
+    list_display = ("title", "parent_task_name", "status", "created_at", "updated_at")
     list_filter = ("status",)
     search_fields = ("title",)
     readonly_fields = ("created_at", "updated_at")
+
+    def parent_task_name(self, obj):
+        return obj.parent_task.title
+
+    parent_task_name.short_description = "Parent Task Name"
 
 
 admin.site.register(Subtask, SubtaskAdmin)
