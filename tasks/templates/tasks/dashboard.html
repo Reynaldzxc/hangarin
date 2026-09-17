@@ -1,11 +1,49 @@
-
-
 {% extends "tasks/base.html" %}
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<h2 class="mb-4">Dashboard</h2>
 
-<p>Welcome to Hangarin!</p>
+<div class="row">
+
+
+    <div class="col-md-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">In Progress</h5>
+            <p class="card-text">{{ in_progress_tasks }}</p>
+        </div>
+    </div>
+</div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Tasks</h5>
+                <p class="card-text">{{ total_tasks }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Pending</h5>
+                <p class="card-text">{{ pending_tasks }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Completed</h5>
+                <p class="card-text">{{ completed_tasks }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
+
