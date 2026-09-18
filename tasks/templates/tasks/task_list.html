@@ -1,67 +1,168 @@
 
-
 {% extends "tasks/base.html" %}
 
 {% block content %}
 
-<h2 class="mb-4">Tasks</h2>
-<a href="{% url 'create_task' %}" class="btn btn-primary mb-4">
-    Add New Task
-</a>
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="page-title mb-1">Tasks</h2>
+        <p class="text-muted mb-0">
+            Manage and organize your tasks.
+        </p>
+    </div>
 
+    <a href="{% url 'create_task' %}" class="btn btn-primary">
+        + Add New Task
+    </a>
+</div>
+
+
+<!-- Task List -->
 {% for task in tasks %}
 
-<div class="card mb-3">
-    <div class="card-body">
+<div class="card task-card mb-4">
 
-        <h5 class="card-title">{{ task.title }}</h5>
+    <div class="card-body p-4">
 
-        <p class="card-text">
-            {{ task.description }}
+        <!-- Task Title -->
+        <div class="d-flex justify-content-between align-items-start mb-2">
+
+            <h5 class="card-title fw-bold mb-0">
+                {{ task.title }}
+            </h5>
+
+        </div>
+
+
+        <!-- Description -->
+        <p class="text-muted mb-4">
+            {{ task.description|truncatechars:180 }}
         </p>
 
-       <p>
-        <strong>Status:</strong>
-        <span class="badge bg-secondary">{{ task.status }}</span>
+
+        <!-- Task Information -->
+        <div class="task-info mb-4">
+
+            <div>
+                <small class="text-muted d-block">Status</small>
+
+                {% if task.status == "Completed" %}
+                    <span class="badge bg-success">
+                        {{ task.status }}
+                    </span>
+                {% elif task.status == "In Progress" %}
+                    <span class="badge bg-info text-dark">
+                        {{ task.status }}
+                    </span>
+                {% else %}
+                    <span class="badge bg-secondary">
+                        {{ task.status }}
+                    </span>
+                {% endif %}
+            </div>
+
+
+            <div>
+                <small class="text-muted d-block">Category</small>
+
+                <span class="badge bg-success">
+                    {{ task.category }}
+                </span>
+            </div>
+
+
+            <div>
+                <small class="text-muted d-block">Priority</small>
+
+                {% if task.priority.name == "Critical" %}
+                    <span class="badge bg-danger">
+                        {{ task.priority }}
+                    </span>
+                {% elif task.priority.name == "High" %}
+                    <span class="badge bg-warning text-dark">
+                        {{ task.priority }}
+                    </span>
+                {% elif task.priority.name == "Medium" %}
+                    <span class="badge bg-info text-dark">
+                        {{ task.priority }}
+                    </span>
+                {% else %}
+                    <span class="badge bg-secondary">
+                        {{ task.priority }}
+                    </span>
+                {% endif %}
+            </div>
+
+
+            <div>
+                <small class="text-muted d-block">Deadline</small>
+
+                <span class="badge bg-dark">
+                    {{ task.deadline|date:"M d, Y - h:i A" }}
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+
+            <a href="{% url 'edit_task' task.id %}"
+               class="btn btn-warning btn-sm px-3">
+                Edit
+            </a>
+
+            <a href="{% url 'delete_task' task.id %}"
+               class="btn btn-danger btn-sm px-3">
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<!-- No Tasks -->
+<div class="card">
+    <div class="card-body text-center p-5">
+
+        <h5 class="fw-bold">No tasks yet</h5>
+
+        <p class="text-muted">
+            Create your first task to get started.
         </p>
 
-        <p>
-            <strong>Category:</strong>
-            <span class="badge bg-success">{{ task.category }}</span>
-        </p>
-
-        <p>
-            <strong>Priority:</strong>
-          <span class="badge bg-info">{{ task.priority }}</span>
-        </p>
-
-        <p>
-            <strong>Deadline:</strong>
-             <span class="badge bg-dark">{{ task.deadline }}</span>
-        </p>
-
-        <a href="{% url 'edit_task' task.id %}" class="btn btn-warning">
-            Edit
+        <a href="{% url 'create_task' %}" class="btn btn-primary">
+            + Create Task
         </a>
 
-        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">
-             Delete
-        </a>
     </div>
 </div>
 
 {% endfor %}
 
+
+<!-- Pagination -->
+{% if page_obj.paginator.num_pages > 1 %}
+
 <nav class="mt-4">
-    <ul class="pagination">
+
+    <ul class="pagination justify-content-center">
 
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}">
                     Previous
                 </a>
             </li>
         {% endif %}
+
 
         <li class="page-item active">
             <span class="page-link">
@@ -69,14 +170,20 @@
             </span>
         </li>
 
+
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}">
                     Next
                 </a>
             </li>
         {% endif %}
 
     </ul>
+
 </nav>
+
+{% endif %}
+
 {% endblock %}
