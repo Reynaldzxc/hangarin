@@ -38,8 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    'django.contrib.sites',
+
     'tasks',
+    'pwa',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +56,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -120,6 +131,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATICFILES_DIRS = [ BASE_DIR / 'static', ]
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
@@ -128,3 +141,54 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+PWA_APP_NAME = 'Hangarin'
+PWA_APP_DESCRIPTION = 'A Progressive Web App for managing tasks'
+PWA_APP_THEME_COLOR = '#212529'
+PWA_APP_BACKGROUND_COLOR = '#f5f7fa'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'portrait'
+PWA_APP_START_URL = '/'
+
+PWA_APP_STATUS_BAR_COLOR = 'default'
+
+PWA_APP_ICONS = [
+{
+'src': '/static/img/icon-192.png',
+'sizes': '192x192'
+},
+{
+'src': '/static/img/icon-512.png',
+'sizes': '512x512'
+}
+]
+
+PWA_APP_ICONS_APPLE = [
+{
+'src': '/static/img/icon-192.png',
+'sizes': '192x192'
+},
+{
+'src': '/static/img/icon-512.png',
+'sizes': '512x512'
+}
+]
+
+PWA_APP_DIR = 'ltr'
+
+PWA_SERVICE_WORKER_PATH = os.path.join(
+BASE_DIR,
+'static/js',
+'serviceworker.js'
+)

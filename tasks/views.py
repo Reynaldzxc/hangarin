@@ -3,6 +3,9 @@ from django.core.paginator import Paginator
 from .models import Task
 from .forms import TaskForm
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 def dashboard(request):
     total_tasks = Task.objects.count()
     pending_tasks = Task.objects.filter(status = "Pending").count()
@@ -80,3 +83,7 @@ def delete_task(request, task_id):
     }
 
     return render(request, "tasks/task_confirm_delete.html", context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('account_login')
