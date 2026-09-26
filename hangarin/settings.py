@@ -27,6 +27,9 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'reynaldzxc1.pythonanywhere.com']
+CSRF_TRUSTED_ORIGINS = [
+    'https://reynaldzxc1.pythonanywhere.com',
+]
 
 
 # Application definition
