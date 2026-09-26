@@ -31,6 +31,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://reynaldzxc1.pythonanywhere.com',
 ]
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
