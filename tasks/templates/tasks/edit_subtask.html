@@ -1,0 +1,68 @@
+
+{% extends "tasks/base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+
+<div class="col-md-6">
+
+    <div class="card">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-1">
+                Edit Subtask
+            </h4>
+
+            <p class="text-muted mb-4">
+                Update the subtask title.
+            </p>
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        Subtask
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        value="{{ subtask.title }}"
+                        required
+                    >
+
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Changes
+                    </button>
+
+                    <a href="{% url 'task_detail' subtask.parent_task.id %}"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}
